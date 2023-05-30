@@ -4,8 +4,9 @@ from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import User
-from .serializers import UserIDSerializer, UserAllSerializer, LoginSerializer, RegisterSerializer
+from .models import User, Vacancies
+from .serializers import UserIDSerializer, UserAllSerializer, LoginSerializer, RegisterSerializer,\
+    VacanciesAllSerializer
 
 
 class AllUserApiView(generics.ListCreateAPIView):
@@ -14,6 +15,15 @@ class AllUserApiView(generics.ListCreateAPIView):
     serializer_class = UserAllSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['username']
+    authentication_classes = (SessionAuthentication,)
+
+
+class AllVacanciesApiView(generics.ListCreateAPIView):
+    """Все пользователи"""
+    queryset = Vacancies.objects.all()
+    serializer_class = VacanciesAllSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['title']
     authentication_classes = (SessionAuthentication,)
 
 

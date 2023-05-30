@@ -6,7 +6,14 @@ class ProductAllSerializer(ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ['title', 'description', 'image', 'price']
+        fields = ['title', 'description', 'image', 'price', 'category']
+
+
+class ProductSaleSerializer(ModelSerializer):
+
+    class Meta:
+        model = Product
+        fields = ['title', 'description', 'image', 'price', 'sale', 'discount']
 
 
 class CategoryAllSerializer(ModelSerializer):

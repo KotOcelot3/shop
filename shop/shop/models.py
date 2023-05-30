@@ -11,3 +11,13 @@ class Shop(models.Model):
     def __str__(self):
         return f'{self.address}'
 
+
+class City(models.Model):
+    title = models.CharField(max_length=50, verbose_name="Название")
+
+    class Meta:
+        verbose_name = "Город"
+        verbose_name_plural = "Города"
+
+    def __str__(self):
+        return f'{self.title}'

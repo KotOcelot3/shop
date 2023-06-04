@@ -1,6 +1,9 @@
-from rest_framework import generics, filters
-from .models import Product, Category
-from .serializers import ProductAllSerializer, CategoryAllSerializer, ProductIDSerializer, ProductSaleSerializer
+from rest_framework import generics, filters, permissions
+from rest_framework.authentication import SessionAuthentication
+from .models import Product, Category, Comment
+from .serializers import ProductAllSerializer, CategoryAllSerializer, ProductIDSerializer, \
+    ProductSaleSerializer, CommentCreateSerializer, ProductCreateSerializer, CategoryIDSerializer, \
+    CommentAllSerializer
 
 
 class AllProductApiView(generics.ListCreateAPIView):
@@ -9,6 +12,14 @@ class AllProductApiView(generics.ListCreateAPIView):
     serializer_class = ProductAllSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['title']
+    permission_classes = (permissions.IsAuthenticated,)
+
+
+class ProductApiView(generics.RetrieveAPIView):
+    """Продукция по ID"""
+    queryset = Product.objects.all()
+    serializer_class = ProductIDSerializer
+    permission_classes = (permissions.IsAuthenticated,)
 
 
 class SaleProductApiView(generics.ListCreateAPIView):
@@ -17,6 +28,7 @@ class SaleProductApiView(generics.ListCreateAPIView):
     serializer_class = ProductSaleSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['title']
+    permission_classes = (permissions.IsAuthenticated,)
 
 
 class AllCategoryApiView(generics.ListCreateAPIView):
@@ -25,9 +37,31 @@ class AllCategoryApiView(generics.ListCreateAPIView):
     serializer_class = CategoryAllSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['title']
+    permission_classes = (permissions.IsAuthenticated,)
 
 
 class CategoryApiView(generics.RetrieveAPIView):
     """Категории по ID"""
     queryset = Category.objects.all()
-    serializer_class = ProductIDSerializer
+    serializer_class = CategoryIDSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+
+class AllCommentApiView(generics.ListCreateAPIView):
+    """Все комментарии"""
+    queryset = Comment.objects.all()
+    serializer_class = CommentAllSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+
+class CreateCommentApiView(generics.CreateAPIView):
+    serializer_class = CommentCreateSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
+
+class CreateProductApiView(generics.CreateAPIView):
+    serializer_class = ProductCreateSerializer
+    permission_classes = (permissions.IsAuthenticated,)

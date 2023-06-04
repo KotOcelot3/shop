@@ -1,12 +1,13 @@
-from django.contrib.auth import logout, authenticate, login
-from rest_framework import generics, filters, status, permissions, exceptions
-from rest_framework.authentication import SessionAuthentication
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from django.contrib.auth import authenticate, login
+from rest_framework import generics, filters, permissions, exceptions
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
 from .models import User, Vacancies
-from .serializers import UserIDSerializer, UserAllSerializer, LoginSerializer, RegisterSerializer,\
-    VacanciesAllSerializer
+from .permissions import IsUserUpdate
+from .serializers import UserIDSerializer, UserAllSerializer, LoginSerializer, RegisterSerializer, \
+    VacanciesAllSerializer, VacanciesIDSerializer, UpdateUserSerializer
 
 
 class AllUserApiView(generics.ListCreateAPIView):
@@ -15,23 +16,14 @@ class AllUserApiView(generics.ListCreateAPIView):
     serializer_class = UserAllSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['username']
-    authentication_classes = (SessionAuthentication,)
-
-
-class AllVacanciesApiView(generics.ListCreateAPIView):
-    """Все пользователи"""
-    queryset = Vacancies.objects.all()
-    serializer_class = VacanciesAllSerializer
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['title']
-    authentication_classes = (SessionAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
 
 
 class UserApiView(generics.RetrieveAPIView):
     """Пользователи по ID"""
     queryset = User.objects.all()
     serializer_class = UserIDSerializer
-    authentication_classes = (SessionAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
 
 
 class RegisterAPI(generics.CreateAPIView):
@@ -45,13 +37,26 @@ class RegisterAPI(generics.CreateAPIView):
         user.save()
 
 
-class Logout(APIView):
-    permission_classes = (IsAuthenticated,)
-    authentication_classes = (SessionAuthentication,)
+class UpdateUserAPI(generics.UpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UpdateUserSerializer
+    permission_classes = (IsUserUpdate,)
 
-    def get(self, request):
-        logout(request)
-        return Response()
+
+class AllVacanciesApiView(generics.ListCreateAPIView):
+    """Все вакансии"""
+    queryset = Vacancies.objects.all()
+    serializer_class = VacanciesAllSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['title']
+    permission_classes = (permissions.IsAuthenticated,)
+
+
+class VacanciesIDView(generics.RetrieveAPIView):
+    """Вакансии по ID"""
+    queryset = Vacancies.objects.all()
+    serializer_class = VacanciesIDSerializer
+    permission_classes = (permissions.IsAuthenticated,)
 
 
 class LoginAPIView(APIView):
@@ -63,11 +68,13 @@ class LoginAPIView(APIView):
         username = data.get('username', None)
         password = data.get('password', None)
         user = authenticate(username=username, password=password)
-        if user is not None:
-            if user.is_active:
-                login(request, user)
-                return Response(status=status.HTTP_200_OK)
-            else:
-                 raise exceptions.NotFound("Ничего не найдено")
+        if user is None:
+            raise exceptions.NotFound("Такого пользователя не существует")
+        if not user.check_password(password):
+            raise exceptions.NotFound("Не верный логин или пароль")
         else:
-            raise exceptions.NotFound("Ничего не найдено")
+            login(request, user)
+            refresh = RefreshToken.for_user(user)
+            return Response({'access_token': str(refresh.access_token), 'refresh_token': str(
+                refresh)})
+

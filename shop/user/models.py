@@ -1,14 +1,14 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from shop.models import Shop
+from shop.models import Shop, City
 
 
 class User(AbstractUser):
-    username = models.CharField(max_length=20, verbose_name="Никнейм", unique=True,)
-    email = models.EmailField(null=False, blank=False, verbose_name="Почта")
+    email = models.EmailField(null=False, blank=False, verbose_name="Почта", unique=True)
     images = models.ImageField(upload_to="image/user/", null=False, blank=False, verbose_name="Картинка")
 
-    # USERNAME_FIELD = 'email'
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
 
     class Meta:
         verbose_name = "Пользователь"
@@ -25,7 +25,9 @@ class Vacancies(models.Model):
     Conditions = models.CharField(max_length=200, verbose_name="Условности")
     price = models.IntegerField(default=0, verbose_name='Оплата', null=False, blank=False)
     shop = models.ManyToManyField(Shop, null=False, verbose_name="Адрес магазина")
-
+    city = models.ManyToManyField(City, null=False, verbose_name="Город")
+    
+    
     class Meta:
         verbose_name = "Вакансии"
         verbose_name_plural = "Вакансии"

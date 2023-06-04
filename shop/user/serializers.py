@@ -10,17 +10,33 @@ class UserAllSerializer(ModelSerializer):
         fields = ['username', 'email', 'images']
 
 
+class UserIDSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'images']
+
+
+class UpdateUserSerializer(ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'images']
+
+
 class VacanciesAllSerializer(ModelSerializer):
 
     class Meta:
         model = Vacancies
-        fields = ['title', 'Responsibilities', 'Requirements', 'Conditions', 'price', 'shop']
+        fields = ['title', 'Responsibilities', 'Requirements', 'Conditions', 'price', 'shop',
+                  'city']
 
 
-class UserIDSerializer(ModelSerializer):
+class VacanciesIDSerializer(ModelSerializer):
+
     class Meta:
-        model = User
-        fields = ['title', 'product', 'images']
+        model = Vacancies
+        fields = ['title', 'Responsibilities', 'Requirements', 'Conditions', 'price', 'shop',
+                  'city']
 
 
 class LoginSerializer(ModelSerializer):

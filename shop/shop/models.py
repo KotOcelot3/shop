@@ -2,18 +2,20 @@ from django.db import models
 
 
 class Shop(models.Model):
+    title = models.CharField(max_length=50, verbose_name="Название магазина", unique=True)
     address = models.CharField(max_length=50, verbose_name="Адрес")
+    city = models.ManyToManyField('City', null=False, verbose_name="Город")
 
     class Meta:
         verbose_name = "Магазин"
         verbose_name_plural = "Магазины"
 
     def __str__(self):
-        return f'{self.address}'
+        return f'{self.title}'
 
 
 class City(models.Model):
-    title = models.CharField(max_length=50, verbose_name="Название")
+    title = models.CharField(max_length=50, verbose_name="Название", unique=True)
 
     class Meta:
         verbose_name = "Город"

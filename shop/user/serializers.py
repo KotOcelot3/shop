@@ -1,9 +1,11 @@
 from rest_framework.fields import CharField
 from rest_framework.serializers import ModelSerializer
+from shop.serializers import ShopVacanciesSerializer
 from .models import User, Vacancies
 
 
 class UserAllSerializer(ModelSerializer):
+    """Сериалайзер всех пользователей"""
 
     class Meta:
         model = User
@@ -11,12 +13,15 @@ class UserAllSerializer(ModelSerializer):
 
 
 class UserIDSerializer(ModelSerializer):
+    """Сериалайзер вывода пользователя по ID"""
+
     class Meta:
         model = User
         fields = ['username', 'email', 'images']
 
 
 class UpdateUserSerializer(ModelSerializer):
+    """Сериалайзер для изменения пользователя"""
 
     class Meta:
         model = User
@@ -24,19 +29,28 @@ class UpdateUserSerializer(ModelSerializer):
 
 
 class VacanciesAllSerializer(ModelSerializer):
+    """Сериалайзер для вывода всех вакансий"""
 
     class Meta:
         model = Vacancies
-        fields = ['title', 'Responsibilities', 'Requirements', 'Conditions', 'price', 'shop',
-                  'city']
+        fields = ['title', 'Responsibilities', 'Requirements', 'Conditions', 'price', 'shop']
 
 
 class VacanciesIDSerializer(ModelSerializer):
+    """Сериалайзер для вывода вакансий по ID"""
+    shop = ShopVacanciesSerializer(many=True)
 
     class Meta:
         model = Vacancies
-        fields = ['title', 'Responsibilities', 'Requirements', 'Conditions', 'price', 'shop',
-                  'city']
+        fields = ['title', 'Responsibilities', 'Requirements', 'Conditions', 'price', 'shop']
+
+
+class VacanciesUpdateSerializer(ModelSerializer):
+    """Сериалайзер для обновления вакансий"""
+
+    class Meta:
+        model = Vacancies
+        fields = ['title', 'Responsibilities', 'Requirements', 'Conditions', 'price', 'shop']
 
 
 class LoginSerializer(ModelSerializer):

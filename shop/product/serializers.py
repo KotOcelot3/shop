@@ -55,9 +55,8 @@ class CommentAllSerializer(ModelSerializer):
 
 class CommentCreateSerializer(ModelSerializer):
     """ Сериалайзер для создания комментария"""
-
     class Meta:
         model = Comment
-        fields = ['id', 'title', 'description', 'user', 'rating']
+        fields = ['id', 'title', 'description', 'rating', 'products']
 
 

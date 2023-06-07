@@ -59,7 +59,8 @@ class CreateCommentApiView(generics.CreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+        serializer.save(user=self.request.user)
+        serializer.save(products=self.request.products)
 
 
 class CreateProductApiView(generics.CreateAPIView):

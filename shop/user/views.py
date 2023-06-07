@@ -7,7 +7,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from .models import User, Vacancies
 from .permissions import IsUserUpdate
 from .serializers import UserIDSerializer, UserAllSerializer, LoginSerializer, RegisterSerializer, \
-    VacanciesAllSerializer, VacanciesIDSerializer, UpdateUserSerializer
+    VacanciesAllSerializer, VacanciesIDSerializer, UpdateUserSerializer, VacanciesUpdateSerializer
 
 
 class AllUserApiView(generics.ListCreateAPIView):
@@ -38,6 +38,7 @@ class RegisterAPI(generics.CreateAPIView):
 
 
 class UpdateUserAPI(generics.UpdateAPIView):
+    """Обновление пользователя"""
     queryset = User.objects.all()
     serializer_class = UpdateUserSerializer
     permission_classes = (IsUserUpdate,)
@@ -57,6 +58,13 @@ class VacanciesIDView(generics.RetrieveAPIView):
     queryset = Vacancies.objects.all()
     serializer_class = VacanciesIDSerializer
     permission_classes = (permissions.IsAuthenticated,)
+
+
+class UpdateVacanciesAPI(generics.UpdateAPIView):
+    """Обновление вакансий"""
+    queryset = Vacancies.objects.all()
+    serializer_class = VacanciesUpdateSerializer
+    permission_classes = (permissions.IsAdminUser,)
 
 
 class LoginAPIView(APIView):

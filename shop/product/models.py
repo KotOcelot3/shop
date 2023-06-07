@@ -67,7 +67,7 @@ class Comment(models.Model):
         (FIVE, 5)
     )
 
-    rating = models.IntegerField(default=0, choices=RATING, verbose_name='оценка')
+    rating = models.IntegerField(default=0, choices=RATING, verbose_name='оценка', null=False)
 
     class Meta:
         verbose_name = "Комментарий"

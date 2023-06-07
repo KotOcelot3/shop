@@ -1,4 +1,3 @@
-from rest_framework.fields import IntegerField
 from rest_framework.serializers import ModelSerializer
 from .models import Product, Category, Comment
 
@@ -29,7 +28,7 @@ class ProductCreateSerializer(ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ['title', 'description', 'category', 'image', 'price', 'discount']
+        fields = ['title', 'description', 'category', 'image', 'price', 'sale', 'discount']
 
 
 class CategoryAllSerializer(ModelSerializer):
@@ -55,8 +54,9 @@ class CommentAllSerializer(ModelSerializer):
 
 class CommentCreateSerializer(ModelSerializer):
     """ Сериалайзер для создания комментария"""
+
     class Meta:
         model = Comment
-        fields = ['id', 'title', 'description', 'rating', 'products']
+        fields = ['title', 'description', 'rating', 'products']
 
 

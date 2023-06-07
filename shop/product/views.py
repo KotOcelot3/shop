@@ -60,9 +60,13 @@ class CreateCommentApiView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
-        serializer.save(products=self.request.products)
 
 
 class CreateProductApiView(generics.CreateAPIView):
     serializer_class = ProductCreateSerializer
     permission_classes = (permissions.IsAuthenticated,)
+
+    # def perform_create(self, serializer):
+    #     if Product.sale:
+    #         Product.price_discount = Product.price + Product.discount
+    #         return Product.price_discount

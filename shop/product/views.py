@@ -1,5 +1,4 @@
 from rest_framework import generics, filters, permissions
-from rest_framework.authentication import SessionAuthentication
 from .models import Product, Category, Comment
 from .serializers import ProductAllSerializer, CategoryAllSerializer, ProductIDSerializer, \
     ProductSaleSerializer, CommentCreateSerializer, ProductCreateSerializer, CategoryIDSerializer, \

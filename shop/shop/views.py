@@ -1,7 +1,6 @@
 from rest_framework import generics, filters, permissions
 from .models import Shop, City
 from .serializers import ShopAllSerializer, CityAllSerializer
-from rest_framework.authentication import SessionAuthentication
 
 
 class AllShopApiView(generics.ListAPIView):

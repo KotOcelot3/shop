@@ -3,8 +3,8 @@ from django.db import models
 
 class Shop(models.Model):
     title = models.CharField(max_length=50, verbose_name="Название магазина", unique=True)
-    address = models.CharField(max_length=50, verbose_name="Адрес")
-    city = models.ManyToManyField('City', null=False, verbose_name="Город")
+    address = models.CharField(max_length=50, verbose_name="Адрес", unique=True)
+    city = models.ManyToManyField('City', blank=True, verbose_name="Город")
 
     class Meta:
         verbose_name = "Магазин"

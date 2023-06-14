@@ -4,15 +4,15 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import User, Vacancies
-from .permissions import IsUserUpdate
+from core.permissions import IsUserUpdate
+from .models import Profile, Vacancies
 from .serializers import UserIDSerializer, UserAllSerializer, LoginSerializer, RegisterSerializer, \
     VacanciesAllSerializer, VacanciesIDSerializer, UpdateUserSerializer, VacanciesUpdateSerializer
 
 
 class AllUserApiView(generics.ListCreateAPIView):
     """Все пользователи"""
-    queryset = User.objects.all()
+    queryset = Profile.objects.all()
     serializer_class = UserAllSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['username']
@@ -21,7 +21,7 @@ class AllUserApiView(generics.ListCreateAPIView):
 
 class UserApiView(generics.RetrieveAPIView):
     """Пользователи по ID"""
-    queryset = User.objects.all()
+    queryset = Profile.objects.all()
     serializer_class = UserIDSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
@@ -39,7 +39,7 @@ class RegisterAPI(generics.CreateAPIView):
 
 class UpdateUserAPI(generics.UpdateAPIView):
     """Обновление пользователя"""
-    queryset = User.objects.all()
+    queryset = Profile.objects.all()
     serializer_class = UpdateUserSerializer
     permission_classes = (IsUserUpdate,)
 

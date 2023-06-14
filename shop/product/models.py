@@ -1,6 +1,6 @@
 from django.core.validators import MaxValueValidator
 from django.db import models
-from user.models import User
+from user.models import Profile
 
 
 class Product(models.Model):
@@ -10,7 +10,7 @@ class Product(models.Model):
                               verbose_name="Картинка")
     price = models.IntegerField(default=1000, verbose_name="Цена")
     sale = models.BooleanField(default=False, null=False, blank=False, verbose_name="Скидка")
-    comment = models.ManyToManyField('Comment', verbose_name="Комментарий", blank=True, null=False,
+    comment = models.ManyToManyField('Comment', verbose_name="Комментарий", blank=True,
                                      related_name='products')
     discount = models.IntegerField(default=0, blank=True, null=True,
                                    validators=[MaxValueValidator(100)],
@@ -48,7 +48,7 @@ class Category(models.Model):
 class Comment(models.Model):
     title = models.CharField(max_length=30, verbose_name="Название")
     description = models.CharField(max_length=260, verbose_name="Текст комментария")
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь")
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, verbose_name="Пользователь")
 
     ONE = 1
     TWO = 2

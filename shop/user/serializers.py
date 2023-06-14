@@ -1,31 +1,31 @@
 from rest_framework.fields import CharField
 from rest_framework.serializers import ModelSerializer
 from shop.serializers import ShopVacanciesSerializer
-from .models import User, Vacancies
+from .models import Profile, Vacancies
 
 
 class UserAllSerializer(ModelSerializer):
     """Сериалайзер всех пользователей"""
 
     class Meta:
-        model = User
-        fields = ['username', 'email', 'images']
+        model = Profile
+        fields = ['id', 'name', 'username', 'telephone_number', 'email', 'images', 'order']
 
 
 class UserIDSerializer(ModelSerializer):
     """Сериалайзер вывода пользователя по ID"""
 
     class Meta:
-        model = User
-        fields = ['username', 'email', 'images']
+        model = Profile
+        fields = ['id', 'name', 'username', 'telephone_number', 'email', 'images', 'order']
 
 
 class UpdateUserSerializer(ModelSerializer):
     """Сериалайзер для изменения пользователя"""
 
     class Meta:
-        model = User
-        fields = ['username', 'email', 'images']
+        model = Profile
+        fields = ['name', 'username', 'telephone_number', 'email', 'images']
 
 
 class VacanciesAllSerializer(ModelSerializer):
@@ -33,7 +33,7 @@ class VacanciesAllSerializer(ModelSerializer):
 
     class Meta:
         model = Vacancies
-        fields = ['title', 'Responsibilities', 'Requirements', 'Conditions', 'price', 'shop']
+        fields = ['id', 'title', 'Responsibilities', 'Requirements', 'Conditions', 'price', 'shop']
 
 
 class VacanciesIDSerializer(ModelSerializer):
@@ -42,7 +42,7 @@ class VacanciesIDSerializer(ModelSerializer):
 
     class Meta:
         model = Vacancies
-        fields = ['title', 'Responsibilities', 'Requirements', 'Conditions', 'price', 'shop']
+        fields = ['id', 'title', 'Responsibilities', 'Requirements', 'Conditions', 'price', 'shop']
 
 
 class VacanciesUpdateSerializer(ModelSerializer):
@@ -50,7 +50,7 @@ class VacanciesUpdateSerializer(ModelSerializer):
 
     class Meta:
         model = Vacancies
-        fields = ['title', 'Responsibilities', 'Requirements', 'Conditions', 'price', 'shop']
+        fields = ['id', 'title', 'Responsibilities', 'Requirements', 'Conditions', 'price', 'shop']
 
 
 class LoginSerializer(ModelSerializer):
@@ -58,7 +58,7 @@ class LoginSerializer(ModelSerializer):
     password = CharField(write_only=True, required=True)
 
     class Meta:
-        model = User
+        model = Profile
         fields = ['username', 'password']
 
 
@@ -67,5 +67,12 @@ class RegisterSerializer(ModelSerializer):
     password = CharField(write_only=True, required=True)
 
     class Meta:
-        model = User
-        fields = ['id', 'username', 'email', 'images', 'password']
+        model = Profile
+        fields = ['id', 'name', 'username', 'telephone_number', 'email', 'images', 'password']
+
+
+class UserOrderSerializer(ModelSerializer):
+
+    class Meta:
+        model = Profile
+        fields = ['name', 'username', 'email', 'telephone_number', 'cart']

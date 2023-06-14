@@ -27,9 +27,13 @@ INSTALLED_APPS = [
     'django_cleanup.apps.CleanupConfig',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
-    'product',
+    'phonenumber_field',
+    'cart',
     'user',
-    'shop'
+    'product',
+    'shop',
+    'order',
+    'core'
 ]
 
 MIDDLEWARE = [
@@ -99,10 +103,8 @@ REST_FRAMEWORK = {
         , ],
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',],
+        'rest_framework.renderers.BrowsableAPIRenderer', ],
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 5
 }
 
 # Internationalization
@@ -127,7 +129,7 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-AUTH_USER_MODEL = 'user.User'
+AUTH_USER_MODEL = 'user.Profile'
 APPEND_SLASH = False
 
 SIMPLE_JWT = {

@@ -1,11 +1,15 @@
 from django.contrib.auth.models import AbstractUser
+from phonenumber_field.modelfields import PhoneNumberField
 from django.db import models
 from shop.models import Shop, City
 
 
-class User(AbstractUser):
+class Profile(AbstractUser):
+    name = models.CharField(max_length=35, null=False, blank=False, verbose_name='Имя')
     username = models.CharField(max_length=25, verbose_name="имя пользователя", unique=True)
     email = models.EmailField(null=False, blank=False, verbose_name="Почта", unique=True)
+    telephone_number = PhoneNumberField(region="RU", null=False, blank=False,
+                                        verbose_name='Номер телефона', unique=True)
     images = models.ImageField(upload_to="image/user/", null=False, blank=False,
                                verbose_name="Картинка")
 

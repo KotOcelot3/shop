@@ -13,10 +13,10 @@ class ObtainAdmin(admin.ModelAdmin):
 
 
 @admin.register(DeliveryAddress)
-class OrderAdmin(admin.ModelAdmin):
+class DeliveryAddressAdmin(admin.ModelAdmin):
     pass
 
 
 @admin.register(PaymentMethod)
-class OrderAdmin(admin.ModelAdmin):
+class PaymentMethodAdmin(admin.ModelAdmin):
     pass

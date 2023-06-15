@@ -67,3 +67,35 @@ class PaymentMethodCreateSerializer(ModelSerializer):
     class Meta:
         model = PaymentMethod
         fields = '__all__'
+
+
+class OrderUpdateSerializer(ModelSerializer):
+    """Сериалайзер для обновдления заказа"""
+
+    class Meta:
+        model = Order
+        exclude = ['user']
+
+
+class ObtainUpdateSerializer(ModelSerializer):
+    """Сериалайзер для обновления способо получения"""
+
+    class Meta:
+        model = Obtain
+        fields = '__all__'
+
+
+class DeliveryAddressUpdateSerializer(ModelSerializer):
+    """Сериалайзер для обновления адреса доставок"""
+
+    class Meta:
+        model = DeliveryAddress
+        fields = '__all__'
+
+
+class PaymentMethodUpdateSerializer(ModelSerializer):
+    """Сериалайзер для обновления способа оплаты"""
+
+    class Meta:
+        model = PaymentMethod
+        fields = '__all__'

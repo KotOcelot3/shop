@@ -1,4 +1,3 @@
-from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 from user.serializers import UserOrderSerializer
 from .models import Order, Obtain, DeliveryAddress, PaymentMethod
@@ -14,7 +13,7 @@ class OrderAllSerializer(ModelSerializer):
 
 
 class ObtainAllSerializer(ModelSerializer):
-    """Сериалайзер всех способов получения"""
+    """Сериалайзер всех способов отправки"""
 
     class Meta:
         model = Obtain
@@ -37,6 +36,14 @@ class PaymentMethodAllSerializer(ModelSerializer):
         fields = '__all__'
 
 
+class OrderIDSerializer(ModelSerializer):
+    """Сериалайзер заказа по ID"""
+
+    class Meta:
+        model = Order
+        fields = '__all__'
+
+
 class OrderCreateSerializer(ModelSerializer):
     """Сериалайзер для создания заказа"""
 
@@ -46,7 +53,7 @@ class OrderCreateSerializer(ModelSerializer):
 
 
 class ObtainCreateSerializer(ModelSerializer):
-    """Сериалайзер для создания способа получения"""
+    """Сериалайзер для создания способа отправки"""
 
     class Meta:
         model = Obtain
@@ -78,7 +85,7 @@ class OrderUpdateSerializer(ModelSerializer):
 
 
 class ObtainUpdateSerializer(ModelSerializer):
-    """Сериалайзер для обновления способо получения"""
+    """Сериалайзер для обновления способа отправки"""
 
     class Meta:
         model = Obtain

@@ -27,7 +27,7 @@ class Vacancies(models.Model):
     Requirements = models.CharField(max_length=200, verbose_name="Требования")
     Conditions = models.CharField(max_length=200, verbose_name="Условности")
     price = models.IntegerField(default=0, verbose_name='Оплата', null=False, blank=False)
-    shop = models.ManyToManyField(Shop, null=False, verbose_name="Адрес магазина")
+    shop = models.ManyToManyField(Shop, verbose_name="Адрес магазина", blank=False)
 
     class Meta:
         verbose_name = "Вакансии"

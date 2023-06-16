@@ -4,7 +4,7 @@ from .models import Product, Category, Comment
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    pass
+    readonly_fields = ['price_discount']
 
 
 @admin.register(Category)

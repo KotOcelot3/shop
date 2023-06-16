@@ -4,7 +4,7 @@ from django.db import models
 class Shop(models.Model):
     title = models.CharField(max_length=50, verbose_name="Название магазина", unique=True)
     address = models.CharField(max_length=50, verbose_name="Адрес", unique=True)
-    city = models.ManyToManyField('City', blank=True, verbose_name="Город")
+    city = models.ManyToManyField('City', blank=False, verbose_name="Город")
 
     class Meta:
         verbose_name = "Магазин"

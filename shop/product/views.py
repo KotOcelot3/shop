@@ -1,8 +1,11 @@
 from rest_framework import generics, filters, permissions
+from rest_framework.response import Response
+from core.permissions import IsUserUpdate
 from .models import Product, Category, Comment
 from .serializers import ProductAllSerializer, CategoryAllSerializer, ProductIDSerializer, \
     ProductSaleSerializer, CommentCreateSerializer, ProductCreateSerializer, CategoryIDSerializer, \
-    CommentAllSerializer
+    CommentAllSerializer, ProductUpdateSerializer, CategoryUpdateSerializer, \
+    CommentUpdateSerializer, CategoryCreateSerializer
 
 
 class AllProductApiView(generics.ListCreateAPIView):
@@ -53,7 +56,27 @@ class AllCommentApiView(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
 
 
+class CommentIDApiView(generics.RetrieveAPIView):
+    """Комментарий по ID"""
+    queryset = Comment.objects.all()
+    serializer_class = CategoryIDSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+
+class CreateProductApiView(generics.CreateAPIView):
+    """Создание товара"""
+    serializer_class = ProductCreateSerializer
+    permission_classes = (permissions.IsAdminUser,)
+
+
+class CreateCategoryApiView(generics.CreateAPIView):
+    """Создание категории"""
+    serializer_class = CategoryCreateSerializer
+    permission_classes = (permissions.IsAdminUser,)
+
+
 class CreateCommentApiView(generics.CreateAPIView):
+    """Создание коментария"""
     serializer_class = CommentCreateSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
@@ -61,11 +84,55 @@ class CreateCommentApiView(generics.CreateAPIView):
         serializer.save(user=self.request.user)
 
 
-class CreateProductApiView(generics.CreateAPIView):
-    serializer_class = ProductCreateSerializer
-    permission_classes = (permissions.IsAuthenticated,)
+class UpdateProductApiView(generics.UpdateAPIView):
+    """Обновление товара"""
+    queryset = Product.objects.all()
+    serializer_class = ProductUpdateSerializer
+    permission_classes = (permissions.IsAdminUser,)
 
-    # def perform_create(self, serializer):
-    #     if Product.sale:
-    #         Product.price_discount = Product.price + Product.discount
-    #         return Product.price_discount
+
+class UpdateCategoryApiView(generics.UpdateAPIView):
+    """Обновление категории"""
+    queryset = Category.objects.all()
+    serializer_class = CategoryUpdateSerializer
+    permissions_classes = (permissions.IsAdminUser,)
+
+
+class UpdateCommentApiView(generics.UpdateAPIView):
+    """Обновление комментария"""
+    queryset = Comment.objects.all()
+    serializer_class = CommentUpdateSerializer
+    permissions_classes = (IsUserUpdate,)
+
+
+class DeleteProductApiVew(generics.DestroyAPIView):
+    """Удаление товара"""
+    queryset = Product.objects.all()
+    permission_classes = (permissions.IsAdminUser,)
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response({'detail': 'Удаление товара успешно'})
+
+
+class DeleteCategoryApiVew(generics.DestroyAPIView):
+    """Удаление категории"""
+    queryset = Category.objects.all()
+    permission_classes = (permissions.IsAdminUser,)
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response({'detail': 'Удаление категории успешно'})
+
+
+class DeleteCommentApiVew(generics.DestroyAPIView):
+    """Удаление комментария"""
+    queryset = Comment.objects.all()
+    permission_classes = (IsUserUpdate,)
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response({'detail': 'Удаление коментария успешно'})

@@ -10,7 +10,7 @@ class Cart(models.Model):
     title = models.CharField(max_length=50, default='Корзина', editable=False,
                              verbose_name='Карзина')
     products = models.ManyToManyField(Product, blank=True, verbose_name='Товары')
-    author = models.OneToOneField('user.Profile', on_delete=models.CASCADE, related_name='cart',
+    user = models.OneToOneField('user.Profile', on_delete=models.CASCADE, related_name='cart',
                                   verbose_name='Пользователь')
     final_price = models.IntegerField(default=0, verbose_name='Цена')
 
@@ -25,4 +25,4 @@ class Cart(models.Model):
         instance.cart.save()
 
     def __str__(self) -> str:
-        return f'{self.title} - {self.author.username}'
+        return f'{self.title} - {self.user.username}'

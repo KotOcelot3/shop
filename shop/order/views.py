@@ -1,11 +1,12 @@
 from rest_framework import generics, filters, permissions
 from rest_framework.response import Response
-
+from core.permissions import IsUserOwner
 from .models import Order, Obtain, DeliveryAddress, PaymentMethod
 from .serializers import OrderAllSerializer, ObtainAllSerializer, DeliveryAddressAllSerializer, \
     PaymentMethodAllSerializer, OrderCreateSerializer, ObtainCreateSerializer, \
-    DeliveryAddressCreateSerializer, PaymentMethodCreateSerializer, OrderUpdateSerializer, ObtainUpdateSerializer, \
-    DeliveryAddressUpdateSerializer, PaymentMethodUpdateSerializer
+    DeliveryAddressCreateSerializer, PaymentMethodCreateSerializer, OrderUpdateSerializer, \
+    ObtainUpdateSerializer, \
+    DeliveryAddressUpdateSerializer, PaymentMethodUpdateSerializer, OrderIDSerializer
 
 
 class AllOrderApiView(generics.ListAPIView):
@@ -17,8 +18,17 @@ class AllOrderApiView(generics.ListAPIView):
     permission_classes = (permissions.IsAdminUser,)
 
 
+class UserAllOrderApiView(generics.ListAPIView):
+    """Заказы пользователя"""
+    serializer_class = OrderIDSerializer
+    permission_classes = (IsUserOwner,)
+
+    def get_queryset(self):
+        return Order.objects.filter(user=self.request.user)
+
+
 class AllObtainApiView(generics.ListAPIView):
-    """Все способы получения"""
+    """Все способы доставки"""
     queryset = Obtain.objects.all()
     serializer_class = ObtainAllSerializer
     filter_backends = [filters.SearchFilter]
@@ -44,6 +54,13 @@ class AllPaymentMethodApiView(generics.ListAPIView):
     permission_classes = (permissions.IsAdminUser,)
 
 
+class OrderIDApiView(generics.RetrieveAPIView):
+    """Заказ по ID"""
+    queryset = Order.objects.all()
+    serializer_class = OrderIDSerializer
+    permission_classes = (IsUserOwner,)
+
+
 class CreateOrderApiView(generics.CreateAPIView):
     """Создать заказ"""
     serializer_class = OrderCreateSerializer
@@ -54,7 +71,7 @@ class CreateOrderApiView(generics.CreateAPIView):
 
 
 class CreateObtainApiView(generics.CreateAPIView):
-    """Создать способ получения"""
+    """Создать способ отправки"""
     serializer_class = ObtainCreateSerializer
     permission_classes = (permissions.IsAdminUser,)
 
@@ -71,26 +88,30 @@ class CreatePaymentMethodApiView(generics.CreateAPIView):
     permission_classes = (permissions.IsAdminUser,)
 
 
-class UpdateOrderApiView(generics.CreateAPIView):
+class UpdateOrderApiView(generics.UpdateAPIView):
     """Обновить заказ"""
+    queryset = Order.objects.all()
     serializer_class = OrderUpdateSerializer
     permission_classes = (permissions.IsAdminUser,)
 
 
-class UpdateObtainApiView(generics.CreateAPIView):
+class UpdateObtainApiView(generics.UpdateAPIView):
     """Обновить способ получения"""
+    queryset = Obtain.objects.all()
     serializer_class = ObtainUpdateSerializer
     permission_classes = (permissions.IsAdminUser,)
 
 
-class UpdateDeliveryAddressApiView(generics.CreateAPIView):
+class UpdateDeliveryAddressApiView(generics.UpdateAPIView):
     """Обновить адрес доставки"""
+    queryset = DeliveryAddress.objects.all()
     serializer_class = DeliveryAddressUpdateSerializer
     permission_classes = (permissions.IsAdminUser,)
 
 
-class UpdatePaymentMethodApiView(generics.CreateAPIView):
+class UpdatePaymentMethodApiView(generics.UpdateAPIView):
     """Обновить способ оплаты"""
+    queryset = PaymentMethod.objects.all()
     serializer_class = PaymentMethodUpdateSerializer
     permission_classes = (permissions.IsAdminUser,)
 
